@@ -11,6 +11,10 @@ type HttpServer struct {
 	routes map[string]RouteDefinition
 }
 
+func New() *HttpServer {
+	return &HttpServer{routes: map[string]RouteDefinition{}}
+}
+
 func (s *HttpServer) RegisterRoutes(routes map[string]RouteDefinition) {
 	if s.routes == nil {
 		s.routes = map[string]RouteDefinition{}
