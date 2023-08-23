@@ -36,6 +36,7 @@ func TestRoutesOperations(t *testing.T) {
 	t.Run("Should add simple route", func(t *testing.T) {
 		server := New()
 		server.RegisterRoutes(*simpleRoutesMap("/xyz", "get"))
+
 		if len(*server.GetRoutes()) != 1 {
 			t.Errorf("Expect 1 registered route, recieved %d", len(*server.GetRoutes()))
 		}
@@ -45,6 +46,7 @@ func TestRoutesOperations(t *testing.T) {
 		server := New()
 		server.RegisterRoutes(*simpleRoutesMap("/xyz", ""))
 		server.RegisterRoutes(*simpleRoutesMap("/xyz/a", ""))
+
 		if len(*server.GetRoutes()) != 2 {
 			t.Errorf("Expect 2 registered routes, recieved %d", len(*server.GetRoutes()))
 		}

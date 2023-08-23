@@ -14,9 +14,9 @@ func HandleRequest(route RouteDefinition) HttpHandlerWithoutReturn {
 
 		w.Header().Set("Content-Type", "application/json")
 		res, err := route.Function(w, r)
+
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-
 			json.NewEncoder(w).Encode(err)
 			return
 		}
