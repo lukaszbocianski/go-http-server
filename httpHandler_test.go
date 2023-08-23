@@ -1,26 +1,36 @@
 package server
 
 import (
-	"reflect"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 )
 
 func TestHandleRequest(t *testing.T) {
-	type args struct {
-		route RouteDefinition
+
+	def := &RouteDefinition{
+		Method: http.MethodPost,
+		Function: func(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+			return nil, nil
+		},
 	}
-	tests := []struct {
-		name string
-		args args
-		want HttpHandlerWithoutReturn
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := HandleRequest(tt.args.route); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("HandleRequest() = %v, want %v", got, tt.want)
-			}
-		})
-	}
+	requestF := HandleRequest(*def)
+
+	t.Run("Should check allowed http method", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/test", nil)
+		w := httptest.NewRecorder()
+		requestF(w, req)
+		if w.Code != http.StatusMethodNotAllowed {
+			t.Errorf("Expected code: %d , got: %d", http.StatusMethodNotAllowed, w.Code)
+		}
+	})
+
+	t.Run("Should allow valid request type", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, "/test", nil)
+		w := httptest.NewRecorder()
+		requestF(w, req)
+		if w.Code != http.StatusOK {
+			t.Errorf("Expected code: %d , got: %d", http.StatusOK, w.Code)
+		}
+	})
 }

@@ -8,7 +8,7 @@ import (
 )
 
 type HttpServer struct {
-	routes map[string]RouteDefinition
+	routes RoutesMap
 }
 
 func New() *HttpServer {
@@ -22,7 +22,7 @@ func (s *HttpServer) RegisterRoutes(routes map[string]RouteDefinition) {
 	maps.Copy(s.routes, routes)
 }
 
-func (s *HttpServer) GetRoutes() *map[string]RouteDefinition {
+func (s *HttpServer) GetRoutes() *RoutesMap {
 	return &s.routes
 }
 
